@@ -1,0 +1,123 @@
+<div class="container my-4" id = "currentEvents">
+
+
+    <!--Carousel Wrapper-->
+    <div id=<%=name%> class="carousel slide carousel-multi-item" data-ride="carousel" >
+
+      <!--Indicators-->
+      <ol class="carousel-indicators">
+        <li data-target=<%=hash%> data-slide-to="0" class="active"></li>
+        <li data-target=<%=hash%> data-slide-to="1"></li>
+      </ol>
+      <!--/.Indicators-->
+
+      <!--Slides-->
+      <div class="carousel-inner" role="listbox">
+
+        <!--First slide-->
+        <div class="carousel-item active">
+
+          <div class="row">
+
+            <% for (var i = 0; i < 3; i ++){ %>
+
+            <% if (i==0) { %> <div class="col-md-4"> <% } %>
+              <% if (i> 0){ %> <div class="col-md-4 clearfix d-none d-md-block"> <%}%>
+
+                <% if (events.length > i){ %>
+                  <%let link = "event/" + events[i].id + "/" + time  %>
+                  <a href= <%=link%>  class="event-click">
+                    <div class="card mb-2">
+                      <img class="card-img-top" src= <%=events[i].image %>
+                        alt="Card image cap">
+                      <div class="card-body">
+                        <h4 class="card-title"> <%=events[i].name %></h4>
+                        <div class="card-text">
+                          <p> <%=events[i].guests[0] %></p>
+                          <p> <%=events[i].guests[1] %></p>
+                          <p> <%=events[i].guests[2] %> </p>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+
+                  <% } else { %>
+
+                      <div class="card mb-2">
+                        <img class="card-img-top" src= "../img/empty.png"
+                          alt="Card image cap">
+                          <img class="card-img-body" src= "../img/empty.png"
+                            alt="Card image cap">
+                      </div>
+
+                  <% } %>
+              </div>
+
+            <% } //for loop%>
+
+          </div>
+        </div>
+        <div class="carousel-item">
+
+          <div class="row">
+
+            <% for (var i = 3; i < 6; i ++){ %>
+
+            <% if (i==0) { %> <div class="col-md-4"> <% } %>
+              <% if (i> 0){ %> <div class="col-md-4 clearfix d-none d-md-block"> <%}%>
+
+                <% if (events.length > i){ %>
+                  <%let link = "event/" + events[i].id + "/" + time %>
+                  <a href= <%=link%>  class="event-click">
+                    <div class="card mb-2">
+                      <img class="card-img-top" src= <%=events[i].image %>
+                        alt="Card image cap">
+                      <div class="card-body">
+                        <h4 class="card-title"> <%=events[i].name %></h4>
+                        <div class="card-text">
+                          <p> <%=events[i].guests[0] %></p>
+                          <p> <%=events[i].guests[1] %></p>
+                          <p> <%=events[i].guests[2] %> </p>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+
+                  <% } else { %>
+
+                      <div class="card mb-2">
+                        <img class="card-img-top" src= "../img/empty.png"
+                          alt="Card image cap">
+                          <img class="card-img-body" src= "../img/empty.png"
+                            alt="Card image cap">
+                      </div>
+                  <% } %>
+              </div>
+
+            <% } //for loop%>
+
+          </div>
+          </div>
+
+
+
+        <!--/.Second slide-->
+      </div>
+      <!--/.Slides-->
+
+      <a class="carousel-control-prev" href=<%=hash%> role="button" data-slide="prev" color = "black">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href=<%=hash%> role="button" data-slide="next" color = "black">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+      </a>
+
+
+    </div>
+    <!--/.Carousel Wrapper-->
+
+
+
+  </div>
