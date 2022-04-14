@@ -81,7 +81,9 @@
  <button type="button" onclick="window.location.href='/venmo'"> Pay with Venmo </button>
 <br>
  <button type="button" onclick=<%=link %> > I paid with cash</button>
- <% } %>
+ <% } else { %>
+   <br>
+   <% } %>
  <% }else if (debts == 0) { %>
 <% } else {%>
 
@@ -104,7 +106,8 @@
     </form>
     <p> <%=email %> </p>
 
-
+    <% } else {%>
+      <br> 
   <% }}}} }%>
 
 </div>

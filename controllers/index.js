@@ -35,7 +35,7 @@ router.get('/', function(request, response) {
     let pastE = allEventStuff.pastEvents(eventArray)
 
     console.log("current", currentE, "past", pastE)
-  response.render("index", {
+    response.render("index", {
     user: request.user,
     currentUser: allUserStuff.getAUser(request.user._json.email),
     currentEvents: currentE,

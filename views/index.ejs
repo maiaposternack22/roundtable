@@ -71,11 +71,11 @@
 
 <h3> current events: </h3>
 
-<%- include('partials/carousel',{events:currentEvents, name:"current-events-carousel", time:"active", hash: "#current-events-carousel"}) -%>
+<%- include('partials/carousel',{events:currentEvents, name:"current-events-carousel", time:"active", hash: "#current-events-carousel", user: currentUser.username}) -%>
 
 <h3> previous events: </h3>
 
-<%- include('partials/carousel',{events:pastEvents, name:"previous-events-carousel", time:"past", hash: "#previous-events-carousel"}) -%>
+<%- include('partials/carousel',{events:pastEvents, name:"previous-events-carousel", time:"past", hash: "#previous-events-carousel", user: currentUser.username}) -%>
 
 
 

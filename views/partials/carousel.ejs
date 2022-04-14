@@ -13,18 +13,46 @@
 
       <!--Slides-->
       <div class="carousel-inner" role="listbox">
+        <% for (let minEvent = 0; minEvent < events.length; minEvent += 3){ %>
 
         <!--First slide-->
+        <% if(minEvent == 0){ %>
         <div class="carousel-item active">
+          <% }  else { %>
+            <div class="carousel-item ">
+
+          <% } %>
 
           <div class="row">
 
-            <% for (var i = 0; i < 3; i ++){ %>
+            <% for (var i = minEvent; i < minEvent + 3; i ++){%>
+
 
             <% if (i==0) { %> <div class="col-md-4"> <% } %>
               <% if (i> 0){ %> <div class="col-md-4 clearfix d-none d-md-block"> <%}%>
 
                 <% if (events.length > i){ %>
+
+                  <% let guests = [] %>
+                  <% for (let a = 0; a < 4 ; a ++){%>
+                      <% if(a >= events[i].guests.length ) { %>
+                        <% guests.push(" -  ") %>
+                        <% console.log(a,events[i].guests.length) %>
+                        <% } else { %>
+                        <% if(events[i].guests[a] !== user) { %>
+                          <% guests.push(events[i].guests[a]) %>
+                      <% }}}%>
+                      <% console.log("guest length",events[i].guests.length)  %>
+
+                      <% if(events[i].guests.length > 4) { %>
+                        <% console.log("guest length",events[i].guests.length)  %>
+
+                        <% guests[2] = ("...and " + (guests.length -1) +" more") %>
+                        <% }%>
+
+
+
+
                   <%let link = "event/" + events[i].id + "/" + time  %>
                   <a href= <%=link%>  class="event-click">
                     <div class="card mb-2">
@@ -33,9 +61,9 @@
                       <div class="card-body">
                         <h4 class="card-title"> <%=events[i].name %></h4>
                         <div class="card-text">
-                          <p> <%=events[i].guests[0] %></p>
-                          <p> <%=events[i].guests[1] %></p>
-                          <p> <%=events[i].guests[2] %> </p>
+                          <p> <%=guests[0]%></p>
+                          <p> <%=guests[1]%></p>
+                          <p> <%=guests[2]%> </p>
                         </div>
                       </div>
                     </div>
@@ -43,12 +71,7 @@
 
                   <% } else { %>
 
-                      <div class="card mb-2">
-                        <img class="card-img-top" src= "../img/empty.png"
-                          alt="Card image cap">
-                          <img class="card-img-body" src= "../img/empty.png"
-                            alt="Card image cap">
-                      </div>
+
 
                   <% } %>
               </div>
@@ -57,53 +80,13 @@
 
           </div>
         </div>
-        <div class="carousel-item">
-
-          <div class="row">
-
-            <% for (var i = 3; i < 6; i ++){ %>
-
-            <% if (i==0) { %> <div class="col-md-4"> <% } %>
-              <% if (i> 0){ %> <div class="col-md-4 clearfix d-none d-md-block"> <%}%>
-
-                <% if (events.length > i){ %>
-                  <%let link = "event/" + events[i].id + "/" + time %>
-                  <a href= <%=link%>  class="event-click">
-                    <div class="card mb-2">
-                      <img class="card-img-top" src= <%=events[i].image %>
-                        alt="Card image cap">
-                      <div class="card-body">
-                        <h4 class="card-title"> <%=events[i].name %></h4>
-                        <div class="card-text">
-                          <p> <%=events[i].guests[0] %></p>
-                          <p> <%=events[i].guests[1] %></p>
-                          <p> <%=events[i].guests[2] %> </p>
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-
-                  <% } else { %>
-
-                      <div class="card mb-2">
-                        <img class="card-img-top" src= "../img/empty.png"
-                          alt="Card image cap">
-                          <img class="card-img-body" src= "../img/empty.png"
-                            alt="Card image cap">
-                      </div>
-                  <% } %>
-              </div>
-
-            <% } //for loop%>
-
-          </div>
-          </div>
-
-
+        <%   }//end of slide and minEvent var %>
 
         <!--/.Second slide-->
       </div>
       <!--/.Slides-->
+
+      <% if(events.length >3){ %>
 
       <a class="carousel-control-prev" href=<%=hash%> role="button" data-slide="prev" color = "black">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -113,6 +96,8 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
       </a>
+      <% } %>
+
 
 
     </div>
