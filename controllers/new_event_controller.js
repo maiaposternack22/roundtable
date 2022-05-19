@@ -1,9 +1,12 @@
+//..............Include Express..................................//
 const express = require('express');
 router = express.Router();
 const allUserStuff = require('../models/user_model');
 const allEventStuff = require('../models/events_model');
+const multer = require('multer');
 
 
+//checks if logged in
 function loggedIn(request, response, next) {
   if (request.user) {
     next();
@@ -12,6 +15,19 @@ function loggedIn(request, response, next) {
   }
 }
 
+let publicStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/images')
+  },
+  filename: function (req, file, cb) {
+    console.log(file)
+    cb(null, Date.now()+'-'+req.user._json.email);
+
+  }
+});
+let publicUpload = multer({ storage: publicStorage });
+
+//get for create new event. renders new event page
 router.get('/newEvent', loggedIn, function(request, response) {
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
@@ -23,22 +39,46 @@ router.get('/newEvent', loggedIn, function(request, response) {
   });
 });
 
-router.post('/newEvent',loggedIn, function(request, response) {
+//post for create new event
+router.post('/newEvent',publicUpload.single('picture'),loggedIn, function(request, response) {
   let name = request.body.eventName;
+  //create array of friends (people in group)
   let friends = [];
-  friends.push(allUserStuff.getAUser(request.user._json.email).username)
+  //if there are any friends added to event
   if (request.body.eventFriends){
-  if(Array.isArray(request.body.eventFriends.length)){
-  for(let i of request.body.eventFriends ){
-  friends.push(i)}}
-  else{
+    //if there is >1 friend added
+    if(Array.isArray(request.body.eventFriends)){
+      for(let i of request.body.eventFriends ){
+        //add all those friends to friends array
+        friends.push(i)}
+      }
+        //if there is 1 friend being added
+    else{
     friends.push(request.body.eventFriends)
-  }}
-  let picture = request.body.eventPicture;
-  let id = allEventStuff.createNewEvent(name, friends,picture);
-  allUserStuff.updateEventArrays(friends,id)
+  }
+} //if (request.body.eventFriends)
+  let me = []
+  me.push(allUserStuff.getAUser(request.user._json.email).username)
+  console.log("ME", me)
+  let id;
+  //create new event and save id
+  if(request.file){
+   id = allEventStuff.createNewEvent(name, friends,"/images/"+request.file.filename, me);
+ }else{
+   id = allEventStuff.createNewEvent(name, friends," ", me);
+
+}
+  //update user data
+  allUserStuff.updatePendingEventArrays(friends,id)
+
+
+  allUserStuff.updateEventArraysForString((allUserStuff.getAUser(request.user._json.email).username),id)
+  allUserStuff.addNotification((request.user._json.email), 
+  "You created an event named: " + name + "!")
+
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
+  //redirect to event page
   response.redirect('/event/'+id.toString()+'/active');
 
 });

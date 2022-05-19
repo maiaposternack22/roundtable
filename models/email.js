@@ -74,3 +74,34 @@ exports.sendReminder = function(username,email,id,current,amount,name) {
   });
 
 }
+
+
+exports.sendDispute = function(email,name, desc, price, reason,event_name) {
+
+  const mailInfo = {
+       from: "maia.posternack22@trinityschoolnyc.org",
+       to: email,
+       subject: "RoundTable Transaction Dispute",
+       generateTextFromHTML: true,
+       html: "Hello, <br> This is a notification that "
+       + name +
+       " is disputing your purchase of "
+       + desc +
+       " for $"
+       + price +
+       " because '"
+       + reason +
+       "'. Please resolve this dispute in your event: "
+       + event_name +
+       ". Thanks! <br> RoundTable"
+
+
+
+  };
+
+  smtpTransport.sendMail(mailInfo, (error, response) => {
+       error ? console.log(error) : console.log(response);
+       smtpTransport.close();
+  });
+
+}

@@ -52,6 +52,9 @@
 <h4> You owe <%= dues[currentUser.username].whatToPay[i].whoToPay %> $ <%= dues[currentUser.username].whatToPay[i].howMuch %> </h4>
 <% } else { %>
   <h4> You paid <%= dues[currentUser.username].whatToPay[i].whoToPay %> $ <%= dues[currentUser.username].whatToPay[i].howMuch %> </h4>
+  <p> Two Days:   <img src="../../img/threeStars.png"  height="40" width = "auto"> </p>
+
+
   <% } %>
 <% debts ++%>
 <% } %>
@@ -107,7 +110,7 @@
     <p> <%=email %> </p>
 
     <% } else {%>
-      <br> 
+      <br>
   <% }}}} }%>
 
 </div>

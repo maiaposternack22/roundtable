@@ -22,7 +22,7 @@
 
 <div id="allStuff" >
 
-<form action="/newEvent" method="POST">
+<form action="/newEvent" enctype="multipart/form-data" method="POST">
   <label for="name">Event Name:</label>
   <input type="text" id="name" name="eventName" value=""><br>
   <label for="friends">Add Friends:</label>
@@ -34,8 +34,9 @@
     </select>
     <br>
     <label for="picture"> Background Photo:</label>
-    <input type="text" id="picture" name="eventPicture" value=""><br>
+    <input type="file" id="picture" name="picture" accept="image/*">
 
+<br>
 
   <input type="submit" value="Create" id = "save">
 

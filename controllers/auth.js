@@ -1,11 +1,12 @@
+// all required stuff
 const express = require('express'),
 router = express.Router();
-
 const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const KEYS = require('../config/keys.json');
 
+//creates a "session"
 router.use(session({
   resave: false,
   saveUninitialized: true,
@@ -17,12 +18,12 @@ router.use(session({
 router.use(passport.initialize());
 router.use(passport.session());
 
+//get all info from keys.json to show that we are reputable
 passport.use(new GoogleStrategy({
     clientID: KEYS["google-client-id"],
     clientSecret: KEYS["google-client-secret"],
-   //callbackURL: "http://localhost:3000/auth/google/callback"
-   callbackURL: "https://trin-roundtable.herokuapp.com/auth/google/callback"
-
+   callbackURL: "http://localhost:3000/auth/google/callback"
+   //callbackURL: "https://trin-roundtable.herokuapp.com/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     userProfile = profile; //so we can see & use details form the profile

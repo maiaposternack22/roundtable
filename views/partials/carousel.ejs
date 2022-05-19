@@ -1,6 +1,4 @@
 <div class="container my-4" id = "currentEvents">
-
-
     <!--Carousel Wrapper-->
     <div id=<%=name%> class="carousel slide carousel-multi-item" data-ride="carousel" >
 
@@ -12,7 +10,7 @@
       <!--/.Indicators-->
 
       <!--Slides-->
-      <div class="carousel-inner" role="listbox">
+      <div class="carousel-inner" >
         <% for (let minEvent = 0; minEvent < events.length; minEvent += 3){ %>
 
         <!--First slide-->
@@ -52,9 +50,12 @@
 
 
 
-
+                        <% if(time !== "pending"){%>
                   <%let link = "event/" + events[i].id + "/" + time  %>
                   <a href= <%=link%>  class="event-click">
+
+                    <% }%>
+
                     <div class="card mb-2">
                       <img class="card-img-top" src= <%=events[i].image %>
                         alt="Card image cap">
@@ -64,6 +65,16 @@
                           <p> <%=guests[0]%></p>
                           <p> <%=guests[1]%></p>
                           <p> <%=guests[2]%> </p>
+                          <% if(time == "pending"){%>
+
+                            <%let linkAccept = "window.location.href='/accept/" + events[i].id + "'" %>
+                            <%let linkDecline = "window.location.href='/decline/" + events[i].id + "'" %>
+
+                            <button type="button" onclick=<%=linkAccept%> > Accept </button>
+                            <button type="button" onclick=<%=linkDecline%> > Decline </button>
+
+                          <% }%>
+
                         </div>
                       </div>
                     </div>

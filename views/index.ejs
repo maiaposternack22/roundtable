@@ -16,19 +16,7 @@
   	<!-- JavaScript for adding
   	slider for multiple images
   	shown at once-->
-  	<script type="text/javascript">
-  		$(window).load(function() {
-  			$(".carousel .item").each(function() {
-  				var i = $(this).next();
-  				i.length || (i = $(this).siblings(":first")),
-  				i.children(":first-child").clone().appendTo($(this));
 
-  				for (var n = 0; n < 4; n++)(i = i.next()).length ||
-  				(i = $(this).siblings(":first")),
-  				i.children(":first-child").clone().appendTo($(this))
-  			})
-  		});
-  	</script>
 
 </head>
 
@@ -37,7 +25,7 @@
 
 <%- include('partials/navbar', {currentUser:currentUser}) -%>
 <div id = "title-and-buttons" >
-<h1> Welcome, <%= currentUser.first_name %> </h1>
+<h1> Welcome, <%= currentUser.full_name %> </h1>
 
 <button type="button" onclick="window.location.href='/newEvent'"> Create a new event </button>
 <br>
@@ -67,6 +55,9 @@
     </div>
 
   </div>
+
+<h3> pending events: </h3>
+<%- include('partials/carousel',{events:pendingEvents, name:"pending-events-carousel", time:"pending", hash: "#pending-events-carousel", user: currentUser.username}) -%>
 
 
 <h3> current events: </h3>

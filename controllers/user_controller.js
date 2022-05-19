@@ -1,8 +1,11 @@
+//..............Include Express..................................//
 const express = require('express');
 router = express.Router();
 const allUserStuff = require('../models/user_model');
+const multer = require('multer');
 
 
+//check if logged in
 function loggedIn(request, response, next) {
   if (request.user) {
     next();
@@ -11,6 +14,19 @@ function loggedIn(request, response, next) {
   }
 }
 
+let publicStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/images')
+  },
+  filename: function (req, file, cb) {
+    console.log(file)
+    cb(null, Date.now()+'-'+req.user._json.email);
+
+  }
+});
+let publicUpload = multer({ storage: publicStorage });
+
+// get for /wallet renders wallet page
 router.get('/wallet', loggedIn, function(request, response) {
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
@@ -20,6 +36,8 @@ router.get('/wallet', loggedIn, function(request, response) {
 
   });
 });
+
+// get for /account renders account info page form
 
 router.get('/account', loggedIn, function(request, response) {
   response.status(200);
@@ -31,19 +49,27 @@ router.get('/account', loggedIn, function(request, response) {
   });
 });
 
-router.post('/account', loggedIn, function(request, response) {
+
+
+//post for /acount
+router.post('/account', publicUpload.single('picture'), loggedIn, function(request, response, next ) {
+//gets all form data
 let name = request.body.acct_name;
 let username = request.body.acct_user;
-let picture;
-if((request.body.acct_picture) !== ""){
-  picture = (request.body.acct_picture)
+//update user info
+allUserStuff.updateUser(request.user._json.email, name, username);
+console.log("FILE", request.file)
+  const file = request.file;
+  if(file){
+  allUserStuff.setPic(request.user._json.email,"/images/"+file.filename)
 }
-else{
-  picture = allUserStuff.getAUser(request.user._json.email).image;
 
-}
-allUserStuff.updateUser(request.user._json.email, name, username, picture);
+//refresh page
 response.redirect('/account');
 });
+
+
+
+
 
 module.exports = router;

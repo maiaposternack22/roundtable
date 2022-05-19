@@ -10,19 +10,21 @@ exports.getAnEvent = function(eventId){
   return events[eventId];
 }
 
-exports.createNewEvent =  function(name, friends, picture){
+exports.createNewEvent =  function(name, friends, picture, me){
 let events = JSON.parse(fs.readFileSync(__dirname+'/../data/events.json'));
 let myID = Math.floor(Math.random() * 1000000000000)
 let code = Math.floor(Math.random() * 10000)
 let newEvent = {
   "id":myID,
   "invite_code": code,
-  "guests": friends,
+  "guests": me,
   "name": name,
   "image": picture,
   "completed": false,
   "transactions_ids": [],
-  "total_cost": 0
+  "total_cost": 0,
+  "invited_guests":friends
+
 }
   events[myID] = newEvent;
   fs.writeFileSync(__dirname+'/../data/events.json', JSON.stringify(events));
@@ -35,6 +37,14 @@ events[eventId]["guests"].push(newUser)
 console.log(events[eventId])
 fs.writeFileSync(__dirname+'/../data/events.json', JSON.stringify(events));
 }
+
+exports.addPendingUser = function(eventId, newUser){
+let events = JSON.parse(fs.readFileSync(__dirname+'/../data/events.json'));
+events[eventId]["invited_guests"].push(newUser)
+console.log(events[eventId])
+fs.writeFileSync(__dirname+'/../data/events.json', JSON.stringify(events));
+}
+
 exports.addTransaction = function(transId,eventId){
   let events = JSON.parse(fs.readFileSync(__dirname+'/../data/events.json'));
   events[eventId]["transactions_ids"].push(transId)
@@ -52,6 +62,10 @@ exports.getTrans = function(id){
   return events[id].transactions_ids
 }
 
+exports.getName = function(id){
+  let events = JSON.parse(fs.readFileSync(__dirname+'/../data/events.json'));
+  return events[id].name
+}
 exports.completeEvent = function(id){
   let events = JSON.parse(fs.readFileSync(__dirname+'/../data/events.json'));
   events[id].completed = true;
@@ -117,3 +131,32 @@ exports.pastEvents = function(eventArray){
   }
   return(info)
 }
+
+exports.pendingEvents = function(pendingArray){
+  let events = JSON.parse(fs.readFileSync(__dirname+'/../data/events.json'));
+  let info = []
+  for(let pendingId of pendingArray){
+    info.push(events[pendingId.toString()])
+
+  }
+  return(info)
+}
+
+exports.pendingToActive = function(user, eventId){
+  let events = JSON.parse(fs.readFileSync(__dirname+'/../data/events.json'));
+  if(events[eventId].guests.includes(user)==false){
+  events[eventId].guests.push(user)
+}
+  events[eventId].invited_guests = events[eventId].invited_guests.filter(function(item) {
+    return item !== user
+})
+  fs.writeFileSync(__dirname+'/../data/events.json', JSON.stringify(events));
+  }
+
+  exports.pendingToDelete = function(user, eventId){
+    let events = JSON.parse(fs.readFileSync(__dirname+'/../data/events.json'));
+    events[eventId].invited_guests = events[eventId].invited_guests.filter(function(item) {
+      return item !== user
+  })
+    fs.writeFileSync(__dirname+'/../data/events.json', JSON.stringify(events));
+    }

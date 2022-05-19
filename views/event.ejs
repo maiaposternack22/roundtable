@@ -58,7 +58,7 @@
                                 <label for="name"> Username </label>
 
                                 <select name="friend_name" id="name" >
-                                  <% for (let i of allOtherUsers) { %>
+                                  <% for (let i of nonInvited) { %>
                                     <option value=<%=i%> ><%=i%></option>
                                     <% } %>
                                   </select>
@@ -98,14 +98,30 @@
       <th class = "pur_name">YOU</th>
       <%} %>
       <th class = "pur_type"> <%= index.desc %> </th>
-      <th class = "pur_rec"> <button type="button"> 🧾</button> </th>
+      <% if (index.receipt !== ""){ %>
+        <%let trans_link = "window.location.href='/transaction/" + index.id + "'" %>
+
+      <th class = "pur_rec"> <button type="button" onclick= <%= trans_link %> > 🧾</button> </th>
+      <% }else{ %>
+      <th class = "pur_rec"></th>
+      <% } %>
+
+
       <th class = "pur_price">$ <%=index.price %> </th>
       <th class = "pur_each">$<%=Math.round(100*index.price/event["guests"].length)/100%> /person</th>
+      <% if (index.dispute.length > 0){ %>
+        <%let dispute_link = "window.location.href='/disputeChat/" + index.id + "'" %>
+        <th class = "pur_dispute" onclick= <%= dispute_link %> > DISPUTED </th>
+        <% } %>
+
+
+
     </tr>
 
     <% }  %>
 
 </table>
+<br>
 <div id="bottom_buttons" >
   <div class="dropdown">
           <button class="  dropdown-toggle"
@@ -116,13 +132,15 @@
           <div class="dropdown-menu" id="myDropdown"
               aria-labelledby="dropdownMenuButton" style="width: 90%;" >
               <a class="dropdown-item" href="#">
-                  <form action="/newTransaction" method="POST" id="purchase_form" >
+                  <form action="/newTransaction" enctype="multipart/form-data" method="POST" id="purchase_form" >
                     <label for="desc"> Purchase Description </label>
                     <input type="text" id="desc" name="purchase_desc" value=""><br>
                     <label for="price"> Purchase Price </label>
                     <input type="text" id="price" name="purchase_price" value=""><br>
-                    <label for="receipt"> (Optional) Upload A Receipt</label>
-                    <input type="file" id="receipt" name="purchase_reciept" value=""><br>
+
+                    <label for="picture"> (Optional) Upload A Receipt </label>
+                    <input type="file" id="picture" name="picture" accept="image/*"> <br>
+
                     <input type="hidden" id="id" name="id" value= <%=event.id%>>
 
 
@@ -133,10 +151,39 @@
 
           </div>
       </div>
-<br> <br>
- <button type="button"> Dispute A Purchase</button>
- <%let link = "window.location.href='/eventDues/" + event.id + "'" %>
+<div class="dropdown">
+        <button class="  dropdown-toggle"
+            type="button" id="dispute"
+            data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false"> Dispute A Purchase   </button>
 
+        <div class="dropdown-menu" id="disputeDropDown"
+            aria-labelledby="dispute" style="width: 90%;" >
+            <a class="dropdown-item" href="#">
+                <form action="/dispute" method="POST" id="dispute_form" >
+                  <label for="what"> I'd like to dispute:  </label>
+
+                  <select name="dispute_trans" id="what" >
+                    <% for(let index of trans) { %>
+                      <option value=<%=index.id%>  > <%=index.desc %> for $ <%=index.price %> </option>
+                      <% } %>
+
+                    </select>
+
+                    <label for="why"> Because: </label>
+                    <input type="text" id="why" name="dispute_reason" value=""><br>
+                    <input type="hidden" id="id" name="id" value= <%=event.id%>>
+
+                  <input type="submit" value="Send Dispute" id = "submitted" >
+                </form>
+
+            </a>
+
+        </div>
+    </div>
+
+<br>
+     <%let link = "window.location.href='/eventDues/" + event.id + "'" %>
  <button type="button" onclick= <%= link %> > End Event</button>
 
 </div>

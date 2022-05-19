@@ -137,3 +137,46 @@ margin-left: 5%
   margin-top: 20px;
   background: grey;
 }
+
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.sec{
+    position: relative;
+    right: -13px;
+    top:-22px;
+}
+
+.counter.counter-lg {
+    top: -24px !important;
+}
+
+.counter{
+  height: 15px;
+  width: 15px;
+  background-color: red;
+  border-radius: 100%;
+  color: white;
+}
+
+#transaction_img{
+  margin: auto;
+  display: block;
+  margin-top: 15px;
+
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+
+}
+
+#trans_info{
+  margin-left: 10%;
+
+
+}
